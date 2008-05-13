@@ -1,0 +1,39 @@
+require 'rubygems'
+require 'rake'
+require 'rake/testtask'
+
+namespace :xapian do
+    # Parameters - specify "flush=true" to save changes to the Xapian database
+    # after each model that is updated. This is safer, but slower.
+    desc 'Updates Xapian search index with changes to models since last call'
+    task :update_index do
+        ActsAsXapian.update_index(ENV['flush'] ? true : false)
+    end
+
+    # Parameters - specify 'models="PublicBody User"' to say which models
+    # you index with Xapian.
+    # This totally rebuilds the database, so you will want to restart any
+    # web server afterwards to make sure it gets the changes, rather than
+    # still pointing to the old deleted database.
+    desc 'Completely rebuilds Xapian search index (must specify all models)'
+    task :rebuild_index do
+        raise "specify ALL your models with models=\"ModelName1 ModelName2\" as parameter" if ENV['models'].nil?
+        ActsAsXapian.rebuild_index(ENV['models'].split(" ").map{|m| m.constantize})
+    end
+
+    # Parameters - are models, query, offset, limit, sort_by_prefix,
+    # collapse_by_prefix
+    desc 'Run a query, return YAML of results'
+    task :query do
+        raise "specify models=\"ModelName1 ModelName2\" as parameter" if ENV['models'].nil?
+        raise "specify query=\"your terms\" as parameter" if ENV['query'].nil?
+        s = ActsAsXapian::Search.new(ENV['models'].split(" ").map{|m| m.constantize}, 
+            ENV['query'],
+            :offset => (ENV['offset'] || 0), :limit => (ENV['limit'] || 10),
+            :sort_by_prefix => (ENV['sort_by_prefix'] || nil), 
+            :collapse_by_prefix => (ENV['collapse_by_prefix'] || nil)
+        )
+        STDOUT.puts(s.results.to_yaml)
+    end
+end
+
