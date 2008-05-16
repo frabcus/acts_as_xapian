@@ -96,11 +96,12 @@ e.g. :texts => [ :title, :body ]
 
 * :values, things which have a range of values for sorting, or for collapsing. 
 Specify an array quadruple of [ field, identifier, prefix, type ] where 
-** number is an arbitary numeric identifier for use in the Xapian database
+** identifier is an arbitary numeric identifier for use in the Xapian database
 ** prefix is the part to use in search queries that goes before the :
 ** type can be any of :string, :number or :date
 
-e.g. :values => [ [ :created_at, 0, "created_at" ], [ :size, 1, "size"] ]
+e.g. :values => [ [ :created_at, 0, "created_at", :date ],
+[ :size, 1, "size", :string ] ]
 
 * :terms, things which come after a : in search queries. Specify an array
 triple of [ field, char, prefix ] where 
@@ -139,7 +140,7 @@ object isn't indexed
         end
     end
 
-3. Call 'rake xapian::rebuild_index models="ModelName1 ModelName2"' to build the index
+3. Call 'rake xapian:rebuild_index models="ModelName1 ModelName2"' to build the index
 the first time (you must specify all your indexed models). It's put in a
 development/test/production dir in acts_as_xapian/xapiandbs.
 
