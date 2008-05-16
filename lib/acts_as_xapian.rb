@@ -88,7 +88,7 @@
 #         e.g. :texts => [ :title, :body ]
 # :values, things which have a range of values for indexing, or for collapsing. 
 #         Specify an array quadruple of [ field, identifier, prefix, type ] where 
-#         - number is an arbitary numeric identifier for use in the Xapian database
+#         - identifier is an arbitary numeric identifier for use in the Xapian database
 #         - prefix is the part to use in search queries that goes before the :
 #         - type can be any of :string, :number or :date
 #         e.g. :values => [ [ :created_at, 0, "created_at" ], [ :size, 1, "size"] ]
@@ -111,8 +111,10 @@
 # :if, either an attribute or a function which if returns false means the
 # object isn't indexed
 #
-# 2. Make and run the migration to create the ActsAsXapianJob model, code below
-# (search for ActsAsXapianJob).
+# 2. Make and run the migration to create the ActsAsXapianJob model:
+#    script/generate acts_as_xapian
+#
+#    (Or see code below in under ActsAsXapianJob).
 #
 # 3. Call 'rake xapian::rebuild_index models="ModelName1 ModelName2"' to build the index
 # the first time (you must specify all your indexed models). It's put in a
@@ -437,6 +439,7 @@ module ActsAsXapian
     # Index
    
     # Offline indexing job queue model, create with this migration:
+    # (or use script/generate acts_as_xapian)
     #    class ActsAsXapianMigration < ActiveRecord::Migration
     #        def self.up
     #           create_table :acts_as_xapian_jobs do |t|
@@ -449,7 +452,7 @@ module ActsAsXapian
     #        end
     #
     #        def self.down
-    #            remove_table :acts_as_xapian_jobs
+    #            drop_table :acts_as_xapian_jobs
     #        end
     #    end
     class ActsAsXapianJob < ActiveRecord::Base
