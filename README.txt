@@ -136,7 +136,7 @@ object isn't indexed
             add_index :acts_as_xapian_jobs, [:model, :model_id], :unique => true
         end
         def self.down
-            remove_table :acts_as_xapian_jobs
+            drop_table :acts_as_xapian_jobs
         end
     end
 
