@@ -124,21 +124,10 @@ database
 * :if, either an attribute or a function which if returns false means the
 object isn't indexed
 
-2. Make and run this database migration to create the ActsAsXapianJob model.
+2. Generate a database migration to create the ActsAsXapianJob model:
 
-    class ActsAsXapianMigration < ActiveRecord::Migration
-        def self.up
-           create_table :acts_as_xapian_jobs do |t|
-                t.column :model, :string, :null => false
-                t.column :model_id, :integer, :null => false
-                t.column :action, :string, :null => false
-            end
-            add_index :acts_as_xapian_jobs, [:model, :model_id], :unique => true
-        end
-        def self.down
-            drop_table :acts_as_xapian_jobs
-        end
-    end
+    script/generate acts_as_xapian
+    rake db:migrate
 
 3. Call 'rake xapian:rebuild_index models="ModelName1 ModelName2"' to build the index
 the first time (you must specify all your indexed models). It's put in a
