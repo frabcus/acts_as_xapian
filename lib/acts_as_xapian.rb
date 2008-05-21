@@ -4,7 +4,7 @@
 # Copyright (c) 2008 UK Citizens Online Democracy. All rights reserved.
 # Email: francis@mysociety.org; WWW: http://www.mysociety.org/
 #
-# $Id: acts_as_xapian.rb,v 1.25 2008/05/18 18:56:21 francis Exp $
+# $Id: acts_as_xapian.rb,v 1.27 2008/05/18 22:26:21 francis Exp $
 
 # Documentation
 # =============
