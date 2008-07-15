@@ -186,8 +186,8 @@ To perform a query from code call ActsAsXapian::Search.new. This takes in turn:
 * query_string - Google like syntax, see below
 
 And then a hash of options:
-* :offset - Offset of first result
-* :limit - Number of results per page
+* :offset - Offset of first result (default 0)
+* :limit - Number of results per page (default -1, all)
 * :sort_by_prefix - Optionally, prefix of value to sort by, otherwise sort by relevance
 * :sort_by_ascending - Default true, set to false for descending sort
 * :collapse_by_prefix - Optionally, prefix of value to collapse by (i.e. only return most relevant result from group)
