@@ -16,7 +16,7 @@ Contents
 a. Introduction to acts_as_xapian
 =================================
 
-"Xapian":http://www.xapian.org is a full text search engine library, which has
+"Xapian":http://www.xapian.org is a full text search engine library which has
 Ruby bindings. acts_as_xapian adds support for it to Rails. It is an
 alternative to acts_as_solr, acts_as_ferret or Ultrasphinx.
 
@@ -24,7 +24,7 @@ acts_as_xapian is deployed in production on these websites.
 * "WhatDoTheyKnow":http://www.whatdotheyknow.com 
 * "MindBites":http://www.mindbites.com
 
-The section "Comparison to acts_as_solr" below will give you an idea of 
+The section "c. Comparison to acts_as_solr" below will give you an idea of 
 acts_as_xapian's features.
 
 acts_as_xapian was started by Francis Irving in May 2008 for search and email
@@ -226,12 +226,10 @@ You need the results methods to get the similar models.
 f. Support
 ==========
 
-Please ask any questions on the acts_as_xapian Google Group
-http://groups.google.com/group/acts_as_xapian
+Please ask any questions on the 
+"acts_as_xapian Google Group":http://groups.google.com/group/acts_as_xapian
 
-The official home page and repository for acts_as_xapian are here:
-http://github.com/frabcus/acts_as_xapian/wikis
+The official home page and repository for acts_as_xapian are the
+"acts_as_xapian github page":http://github.com/frabcus/acts_as_xapian/wikis
 
 For more details about anything, see source code in lib/acts_as_xapian.rb
-
-acts_as_xapian was made by Francis Irving
