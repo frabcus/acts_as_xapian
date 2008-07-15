@@ -105,10 +105,13 @@ Specify an array quadruple of [ field, identifier, prefix, type ] where
 e.g. :values => [ [ :created_at, 0, "created_at", :date ],
 [ :size, 1, "size", :string ] ]
 
-* :terms, things which come after a : in search queries. Specify an array
-triple of [ field, char, prefix ] where 
-** char is an arbitary single upper case char used in the Xapian database
+* :terms, things which come with a prefix (before a :) in search queries. 
+Specify an array triple of [ field, char, prefix ] where 
+** char is an arbitary single upper case char used in the Xapian database, just
+pick any single uppercase character, but use a different one for each prefix.
 ** prefix is the part to use in search queries that goes before the :
+For example, if you were making Google and indexing to be able to later do a
+query like "site:www.whatdotheyknow.com", then the prefix would be "site".
 
 e.g. :terms => [ [ :variety, 'V', "variety" ] ]
         
