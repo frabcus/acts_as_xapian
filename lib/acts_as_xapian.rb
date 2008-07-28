@@ -204,8 +204,11 @@ module ActsAsXapian
         # Set self.query before calling this
         def initialize_query(options)
             #raise options.to_yaml
+            
             offset = options[:offset] || 0; offset = offset.to_i
-            limit = options[:limit] || -1; limit = limit.to_i # -1 means all matches?
+            limit = options[:limit]
+            raise "please specifiy maximum number of results to return with parameter :limit" if not limit
+            limit = limit.to_i 
             sort_by_prefix = options[:sort_by_prefix] || nil
             sort_by_ascending = options[:sort_by_ascending] || true
             collapse_by_prefix = options[:collapse_by_prefix] || nil
