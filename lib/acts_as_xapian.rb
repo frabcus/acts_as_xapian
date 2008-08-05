@@ -576,7 +576,7 @@ module ActsAsXapian
 
         # Used to mark changes needed by batch indexer
         def xapian_mark_needs_index
-            model = self.class.to_s
+            model = self.class.base_class.to_s
             model_id = self.id
             ActiveRecord::Base.transaction do
                 found = ActsAsXapianJob.delete_all([ "model = ? and model_id = ?", model, model_id])
@@ -588,7 +588,7 @@ module ActsAsXapian
             end
         end
         def xapian_mark_needs_destroy
-            model = self.class.to_s
+            model = self.class.base_class.to_s
             model_id = self.id
             ActiveRecord::Base.transaction do
                 found = ActsAsXapianJob.delete_all([ "model = ? and model_id = ?", model, model_id])
