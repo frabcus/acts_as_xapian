@@ -563,7 +563,8 @@ module ActsAsXapian
             if self.xapian_options[:texts]
               for text in self.xapian_options[:texts]
                   ActsAsXapian.term_generator.increase_termpos # stop phrases spanning different text fields
-                  ActsAsXapian.term_generator.index_text(xapian_value(text)) 
+                  # XXX the "1" here is a weight that could be varied for a boost function
+                  ActsAsXapian.term_generator.index_text(xapian_value(text), 1) 
               end
             end
 
