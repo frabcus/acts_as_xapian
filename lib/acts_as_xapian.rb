@@ -63,6 +63,9 @@ module ActsAsXapian
     def ActsAsXapian.values_by_prefix
         @@values_by_prefix
     end
+    def ActsAsXapian.config
+      @@config
+    end
 
     ######################################################################
     # Initialisation
@@ -72,14 +75,25 @@ module ActsAsXapian
             @@init_values.push([classname,options])
         end
 
-        # stop if we can't find out if we're in development/test/production
-        rails_env = (ENV['RAILS_ENV'] or RAILS_ENV)
-        raise "Set RAILS_ENV, so acts_as_xapian can find the right Xapian database" if not rails_env
+        # barf if we can't figure out the environment
+        environment = (ENV['RAILS_ENV'] or RAILS_ENV)
+        raise "Set RAILS_ENV, so acts_as_xapian can find the right Xapian database" if not environment
+
+        # check for a config file
+        config_file = RAILS_ROOT + "/config/xapian.yml"
+        @@config = File.exists?(config_file) ? YAML.load_file(config_file)[environment] : {}
+
+        # figure out where the DBs should go
+        if config['base_db_path']
+          db_parent_path = RAILS_ROOT + "/" + config['base_db_path']
+        else
+          db_parent_path = File.join(File.dirname(__FILE__), '../xapiandbs/')
+        end
 
         # make the directory for the xapian databases to go in
-        db_parent_path = File.join(File.dirname(__FILE__), '../xapiandbs/')
         Dir.mkdir(db_parent_path) unless File.exists?(db_parent_path)
-        @@db_path = File.join(db_parent_path, rails_env) 
+
+        @@db_path = File.join(db_parent_path, environment) 
 
         # make some things that don't depend on the db
         # XXX this gets made once for each acts_as_xapian. Oh well.
