@@ -224,7 +224,17 @@ for words_to_highlight. In addition has:
 You need the results methods to get the similar models.
 
 
-f. Support
+f. Configuration
+================
+
+If you want to customise the configuration of acts_as_xapian, it will look for a file called 'xapian.yml'
+under RAILS_ROOT/config. As is familiar from the format of the database.yml file, separate :development,
+:test and :production sections are expected.
+
+The following options are available:
+* base_db_path - specifies the directory, relative to RAILS_ROOT, in which acts_as_xapian stores its DBs
+
+g. Support
 ==========
 
 Please ask any questions on the 
