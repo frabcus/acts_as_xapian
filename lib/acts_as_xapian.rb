@@ -482,14 +482,22 @@ module ActsAsXapian
         # process is aborted and old database carries on being used. Perhaps do in
         # transaction and commit after rename below? Not sure if thenlocking is then bad
         # for live website running at same time.
+        
         ActsAsXapianJob.destroy_all 
+        batch_size = 1000
         for model_class in model_classes
-            models = model_class.find(:all)
-            for model in models
+          model_class.transaction do
+            0.step(model_class.count, batch_size) do |i|
+              STDOUT.puts("ActsAsXapian: New batch. From #{i} to #{i + batch_size}") if verbose
+              models = model_class.find(:all, :limit => batch_size, :offset => i)
+              for model in models
                 STDOUT.puts("ActsAsXapian.rebuild_index #{model_class} #{model.id}") if verbose
                 model.xapian_index
+              end
             end
+          end
         end
+        
         ActsAsXapian.writable_db.flush
 
         # Rename into place
