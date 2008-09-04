@@ -134,7 +134,7 @@ module ActsAsXapian
                   raise "Z is reserved for stemming terms" if term[1] == "Z"
                   raise "Already have code '" + term[1] + "' in another model but with different prefix '" + @@terms_by_capital[term[1]] + "'" if @@terms_by_capital.include?(term[1]) && @@terms_by_capital[term[1]] != term[2]
                   @@terms_by_capital[term[1]] = term[2]
-                  @@query_parser.add_boolean_prefix(term[2], term[1])
+                  @@query_parser.add_prefix(term[2], term[1])
               end
             end
             if options[:values]
