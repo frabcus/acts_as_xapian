@@ -10,7 +10,8 @@ Contents
 * c. Comparison to acts_as_solr (as on 24 April 2008)
 * d. Documentation - indexing
 * e. Documentation - querying
-* f. Support
+* f. Configuration
+* g. Support
 
 
 a. Introduction to acts_as_xapian
@@ -163,7 +164,8 @@ object isn't indexed
 
 3. Call 'rake xapian:rebuild_index models="ModelName1 ModelName2"' to build the index
 the first time (you must specify all your indexed models). It's put in a
-development/test/production dir in acts_as_xapian/xapiandbs.
+development/test/production dir in acts_as_xapian/xapiandbs. See f. Configuration 
+below if you want to change this.
 
 4. Then from a cron job or a daemon, or by hand regularly!, call 'rake xapian:update_index'
 
@@ -232,7 +234,8 @@ under RAILS_ROOT/config. As is familiar from the format of the database.yml file
 :test and :production sections are expected.
 
 The following options are available:
-* base_db_path - specifies the directory, relative to RAILS_ROOT, in which acts_as_xapian stores its DBs
+* base_db_path - specifies the directory, relative to RAILS_ROOT, in which acts_as_xapian stores its 
+search index databases. Default is the directory xapiandbs within the acts_as_xapian directory.
 
 g. Support
 ==========
