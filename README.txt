@@ -147,10 +147,6 @@ A 'field' is a symbol referring to either an attribute or a function which
 returns the text, date or number to index. Both 'identifier' and 'char' must be
 the same for the same prefix in different models.
 
-Alternatively, 
-* :instead_index, a field which refers to another model that should be reindexed
-         instead of this one.
-
 Options may include:
 * :eager_load, added as an :include clause when looking up search results in
 database
