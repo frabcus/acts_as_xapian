@@ -113,7 +113,8 @@ module ActsAsXapian
         raise "acts_as_xapian hasn't been called in any models" if @@init_values.empty?
         
         # if DB is not nil, then we're already initialised, so don't do it again
-        return unless @@db.nil?
+        # XXX we need to reopen!
+        #return unless @@db.nil?
 
         prepare_environment
         
@@ -572,7 +573,7 @@ module ActsAsXapian
             if type == :date
                 if value.kind_of?(Time)
                     value.utc.strftime("%Y%m%d")
-                elsif value.kind_f?(Date)
+                elsif value.kind_of?(Date)
                     value.to_time.utc.strftime("%Y%m%d")
                 else
                     raise "Only Time or Date types supported by acts_as_xapian for :date fields, got " + value.class.to_s
