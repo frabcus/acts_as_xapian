@@ -551,9 +551,6 @@ module ActsAsXapian
                 end
             rescue => detail
                 # print any error, and carry on so other things are indexed
-                # XXX If item is later deleted, this should give up, and it
-                # won't. It will keep trying (assuming update_index called from
-                # regular cron job) and mayhap cause trouble.
                 STDERR.puts(detail.backtrace.join("\n") + "\nFAILED ActsAsXapian.update_index job #{id} #{$!}")
             end
         end
