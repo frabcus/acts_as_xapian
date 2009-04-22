@@ -199,22 +199,23 @@ module ActsAsXapian
         raise NoXapianRubyBindingsError.new("Xapian Ruby bindings not installed") unless ActsAsXapian.bindings_available
         raise "acts_as_xapian hasn't been called in any models" if @@init_values.empty?
 
-        # if DB is not nil, then we're already initialised, so don't do it again
-        return unless @@writable_db.nil?
+        # if DB is not nil, then we're already initialised, so don't do it
+        # again XXX reopen it each time, xapian_spec.rb needs this so database
+        # gets written twice correctly.
+        # return unless @@writable_db.nil?
         
         prepare_environment
 
         new_path = @@db_path + suffix
         raise "writable_suffix/suffix inconsistency" if @@writable_suffix && @@writable_suffix != suffix
-        if @@writable_db.nil?
-            # for indexing
-            @@writable_db = Xapian::WritableDatabase.new(new_path, Xapian::DB_CREATE_OR_OPEN)
-            @@term_generator = Xapian::TermGenerator.new()
-            @@term_generator.set_flags(Xapian::TermGenerator::FLAG_SPELLING, 0)
-            @@term_generator.database = @@writable_db
-            @@term_generator.stemmer = @@stemmer
-            @@writable_suffix = suffix
-        end
+
+        # for indexing
+        @@writable_db = Xapian::WritableDatabase.new(new_path, Xapian::DB_CREATE_OR_OPEN)
+        @@term_generator = Xapian::TermGenerator.new()
+        @@term_generator.set_flags(Xapian::TermGenerator::FLAG_SPELLING, 0)
+        @@term_generator.database = @@writable_db
+        @@term_generator.stemmer = @@stemmer
+        @@writable_suffix = suffix
     end
 
     ######################################################################
@@ -711,6 +712,13 @@ module ActsAsXapian
                 job.save!
             end
         end
+        
+        # Allow reindexing to be skipped if a flag is set
+        def xapian_mark_needs_index_if_reindex
+            return true if (self.respond_to?(:no_xapian_reindex) && self.no_xapian_reindex == true)
+            xapian_mark_needs_index
+        end
+        
         def xapian_mark_needs_destroy
             model = self.class.base_class.to_s
             model_id = self.id
@@ -743,7 +751,7 @@ module ActsAsXapian
 
             ActsAsXapian.init(self.class.to_s, options)
 
-            after_save :xapian_mark_needs_index
+            after_save :xapian_mark_needs_index_if_reindex
             after_destroy :xapian_mark_needs_destroy
         end
     end
